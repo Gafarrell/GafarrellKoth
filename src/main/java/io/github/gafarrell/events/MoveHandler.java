@@ -18,8 +18,8 @@ public class MoveHandler implements Listener {
     public void OnPlayerMove(PlayerMoveEvent e)
     {
         activeKoths.forEach(kothController -> {
-            if (kothController.IsPlayerWithinKoth(e.getTo())){
-                kothController.AddActiveCaptor(e.getPlayer());
+            if (kothController.isPlayerWithinKoth(e.getTo())){
+                kothController.addActiveCaptor(e.getPlayer());
             }
         });
     }

@@ -1,4 +1,4 @@
-package io.github.gafarrell.koth.coordinates;
+package io.github.gafarrell.koth.resources;
 
 import org.bukkit.Location;
 import org.bukkit.World;

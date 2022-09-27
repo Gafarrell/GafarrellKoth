@@ -50,11 +50,11 @@ public class KothTimer extends BukkitRunnable{
      */
     public void StartKoth(KothController controller){
         if (ActiveKoths.contains(controller)){
-            controller.Start();
+            controller.start();
         }
         else {
             ActiveKoths.add(controller);
-            controller.Start();
+            controller.start();
         }
     }
 
@@ -76,11 +76,11 @@ public class KothTimer extends BukkitRunnable{
             if (LastTimeMillis > 0f)
             {
                 float deltaTime = System.currentTimeMillis()-LastTimeMillis;
-                kothController.AdjustDuration(deltaTime);
+                kothController.adjustDuration(deltaTime);
             }
 
             if (!kothController.isActive()){
-                kothController.ConcludeKoth();
+                kothController.concludeKoth();
             }
         });
         LastTimeMillis = System.currentTimeMillis();

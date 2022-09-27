@@ -1,42 +1,57 @@
 package io.github.gafarrell.koth;
 
-import io.github.gafarrell.koth.coordinates.Region;
+import io.github.gafarrell.koth.resources.Contestant;
+import io.github.gafarrell.koth.resources.Region;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 
 public class KothController {
     private KothObject koth;
-    private float RemainingDuration;
-    private HashMap<Player, Float> Participants = new HashMap<>();
-    private ArrayList<Player> activeCaptors = new ArrayList<>();
-    private boolean IsActive = false;
+    private float remainingDuration;
+    private boolean isActive = false;
+
+    private final ArrayList<Player> activeCaptors = new ArrayList<>();
+    private final List<Contestant> participants = new ArrayList<Contestant>(){
+        @Override
+        public boolean add(Contestant c){
+            participants.add(c);
+            Collections.sort(participants);
+            return true;
+        }
+    };
 
     public KothController(KothObject koth)
     {
         this.koth = koth;
-        RemainingDuration = koth.getActiveDuration();
+        remainingDuration = koth.getActiveDuration();
     }
 
-    public void AdjustDuration(float DeltaTime)
+    public void adjustDuration(float DeltaTime)
     {
-        RemainingDuration -= DeltaTime;
-        Participants.keySet().forEach(player -> {
-            Participants.put(player, Participants.get(player)+DeltaTime);
+        remainingDuration -= DeltaTime;
+        participants.forEach(contestant -> {
+
         });
-        if (RemainingDuration <= 0){
-            IsActive = false;
+        if (remainingDuration <= 0){
+            isActive = false;
         }
     }
 
-    public void ConcludeKoth()
+    public void concludeKoth()
     {
+        if (koth.hasRewards()){
 
+            // TODO: Distribute rewards
+        }
+
+        if (koth.hasNextKoth()){
+            // TODO: Start next KoTH region.
+        }
     }
 
-    public boolean IsPlayerWithinKoth(Location playerLocation)
+    public boolean isPlayerWithinKoth(Location playerLocation)
     {
         for (Region r : koth.getCaptureRegions())
         {
@@ -45,22 +60,21 @@ public class KothController {
         return false;
     }
 
-    public void RemoveActiveCaptor(Player p){
+    public void removeActiveCaptor(Player p){
         activeCaptors.remove(p);
     }
 
-    public void AddActiveCaptor(Player p) {
+    public void addActiveCaptor(Player p) {
         if (activeCaptors.contains(p)) return;
 
         activeCaptors.add(p);
-        Participants.putIfAbsent(p, 0f);
     }
 
-    public void Start(){IsActive = true;}
-    public void Pause(){IsActive = false;}
+    public void start(){ isActive = true; }
+    public void Pause(){ isActive = false; }
 
 
     public boolean isActive() {
-        return IsActive;
+        return isActive;
     }
 }
