@@ -1,0 +1,9 @@
+main: io.github.gafarrell.GafarrellKoTH
+name: "GafarrellKoTH"
+version: 0.0.1
+
+commands:
+  koth:
+    description: "Tells you I'm active!"
+    permission: koth.koth
+    permission-message: "Not allowed!!!"

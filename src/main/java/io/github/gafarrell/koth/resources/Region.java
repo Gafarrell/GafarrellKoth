@@ -1,6 +1,7 @@
 package io.github.gafarrell.koth.resources;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
 
@@ -15,6 +16,7 @@ public class Region {
         SideLength = r;
         worldPoint = new Vector(loc.getX(), loc.getY(), loc.getZ());
         world = loc.getWorld();
+        world.getBlockAt(new Location(world, worldPoint.getX(), worldPoint.getY(), worldPoint.getZ())).setType(Material.GLOWSTONE);
     }
 
     // Checks if player is within region.
@@ -24,6 +26,15 @@ public class Region {
         Vector vec = new Vector(playerLocation.getX(), playerLocation.getY(), playerLocation.getZ()).subtract(worldPoint);
 
         return (Math.abs(vec.getX()) < SideLength/2f && Math.abs(vec.getY()) < SideLength/2f);
+    }
+
+    @Override
+    public String toString(){
+        String info = "";
+        info += String.format("Location: ({0}, {1}, {2})\n", worldPoint.getX(), worldPoint.getY(), worldPoint.getZ());
+        info += "World: " + world.getName() + "\n";
+        info += String.format("Size: {0}x{0}\n", SideLength);
+        return info;
     }
 
     // Getters
