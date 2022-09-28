@@ -22,25 +22,24 @@ public class KothCommandHandler implements CommandExecutor {
             }
 
             KothCmd kothCommand;
+            String[] subArgs = args.length > 1 ? Arrays.copyOfRange(args, 1, args.length) : null;
 
             switch (args[0].toLowerCase())
             {
                 case "create":
-                    String[] subArgs = args.length > 1 ? Arrays.copyOfRange(args, 1, args.length) : null;
                     kothCommand = new KothCreateCmd(commandSender, subArgs);
 
                 case "delete":
                     if (args.length < 2) return false;
                     kothCommand = new KothDeleteCmd(commandSender, args[1]);
 
+                case "info":
                 case "list":
-                    kothCommand = new KothInfoCmd();
-                    commandSender.sendMessage("KoTH Names: " + koths);
+                    kothCommand = new KothInfoCmd(commandSender, subArgs);
                     break;
 
-                case "start":
-                case "info":
                 case "help":
+                case "start":
                 case "pause":
                     commandSender.sendMessage("Command not yet implemented!");
                     break;
