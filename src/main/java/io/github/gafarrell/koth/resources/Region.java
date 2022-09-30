@@ -1,9 +1,7 @@
 package io.github.gafarrell.koth.resources;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
+import org.bukkit.entity.EntityType;
 import org.bukkit.util.Vector;
 
 public class Region {
@@ -38,9 +36,9 @@ public class Region {
     @Override
     public String toString(){
         String info = "";
-        info += String.format("Location: (%f, %f, %f)\n", worldPoint.getX(), worldPoint.getY(), worldPoint.getZ());
-        info += "World: " + world.getName() + "\n";
-        info += String.format("Size: %dx%1$d\n", sideLength);
+        info += String.format("§bLocation: (%f, %f, %f)\n", worldPoint.getX(), worldPoint.getY(), worldPoint.getZ());
+        info += "§bWorld: " + world.getName() + "\n";
+        info += String.format("§bSize: %dx%1$d\n", sideLength);
         return info;
     }
 
@@ -53,6 +51,25 @@ public class Region {
                 .append(sideLength);
 
         return builder.toString();
+    }
+
+    public void displayRegion(){
+        Location location = new Location(world, worldPoint.getX(), worldPoint.getY(), worldPoint.getZ());
+        for (int x = (int) (worldPoint.getX()-(sideLength/2f)); x < (int) (worldPoint.getX()+(sideLength/2f)); x++){
+            location.setX(x);
+            location.setZ((worldPoint.getZ()-(sideLength/2f)));
+            world.playEffect(location, Effect.HAPPY_VILLAGER, 5);
+            location.setZ((worldPoint.getZ()+(sideLength/2f)));
+            world.playEffect(location, Effect.HAPPY_VILLAGER, 5);
+        }
+
+        for (int z = (int) (worldPoint.getZ()-(sideLength/2f)); z < (int) (worldPoint.getZ()+(sideLength/2f)); z++){
+            location.setZ(z);
+            location.setX((worldPoint.getX()-(sideLength/2f)));
+            world.playEffect(location, Effect.HAPPY_VILLAGER, 5);
+            location.setX((worldPoint.getX()+(sideLength/2f)));
+            world.playEffect(location, Effect.HAPPY_VILLAGER, 5);
+        }
     }
 
     // Getters
