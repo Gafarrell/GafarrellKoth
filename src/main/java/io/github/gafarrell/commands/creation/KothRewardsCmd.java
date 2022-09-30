@@ -14,7 +14,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class KothRewardsCmd extends KothCmd implements Listener {
     private final Inventory rewardsChest = Bukkit.createInventory(null, InventoryType.CHEST, "KoTH Rewards");
@@ -37,39 +36,35 @@ public class KothRewardsCmd extends KothCmd implements Listener {
     }
 
     @Override
-    public boolean Execute() {
+    public void Execute() {
         if (args == null || args.length == 0 || !successful){
-            errorMessage = "Invalid arguments";
-            return (successful = false);
+            responseMessage = "§cInvalid arguments";
+            successful = false;
+            return;
         }
         if (!(commandSender instanceof HumanEntity entity)) {
-            errorMessage = "Command sender must be a player!";
-            return (successful = false);
+            responseMessage = "§cCommand sender must be a player!";
+            successful = false;
+            return;
         }
 
         entity.openInventory(rewardsChest);
         Bukkit.getServer().getPluginManager().registerEvents(this, Bukkit.getServer().getPluginManager().getPlugin("GafarrellKoTH"));
 
-        return true;
     }
 
     @EventHandler
     public void onChestClose(InventoryCloseEvent e){
         if (!(e.getInventory().equals(rewardsChest) || !successful) || !successful) {
-            errorMessage = "Could not find koth " + args[0];
+            responseMessage = "§cCould not find koth " + args[0];
             return;
         }
 
-        e.getPlayer().sendMessage("Successfully set rewards for koth: ");
+        e.getPlayer().sendMessage("§aSuccessfully set rewards for koth: ");
         ArrayList<ItemStack> validItems = new ArrayList<>();
         for (ItemStack s : e.getInventory().getContents()){
             if (s != null) validItems.add(s);
         }
         kothToEdit.setRewards(validItems.toArray(new ItemStack[0]));
-    }
-
-    @Override
-    public String getResponseMessage() {
-        return errorMessage;
     }
 }

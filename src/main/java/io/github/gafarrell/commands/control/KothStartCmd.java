@@ -2,9 +2,12 @@ package io.github.gafarrell.commands.control;
 
 import io.github.gafarrell.commands.KothCmd;
 import io.github.gafarrell.koth.KothController;
-import io.github.gafarrell.koth.KothObject;
 import io.github.gafarrell.koth.KothStorage;
 import org.bukkit.command.CommandSender;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class KothStartCmd extends KothCmd {
 
@@ -14,25 +17,29 @@ public class KothStartCmd extends KothCmd {
     }
 
     @Override
-    public boolean Execute() {
-        if (!successful || args == null || args.length < 1) return (successful = false);
+    public void Execute() {
+        if (!successful || args == null || args.length < 1) {
+            successful = false;
+            return;
+        }
 
         KothController controller = KothStorage.makeController(args[0]);
 
         if (controller == null) {
-            errorMessage = "Given KoTH name does not exist!";
-            commandSender.sendMessage(errorMessage);
-            return (successful = false);
+            responseMessage = "§cGiven KoTH name does not exist!";
+            commandSender.sendMessage(responseMessage);
+            successful = false;
+            return;
         }
 
         controller.start();
-        return (successful = true);
+        successful = true;
     }
 
     @Override
     public String getResponseMessage() {
-        if (successful) return "Successfully started KoTH: " + args[0];
+        if (successful) return "§aSuccessfully started KoTH: " + args[0];
 
-        return "Unable to create KoTH!";
+        return "§cUnable to create KoTH!";
     }
 }

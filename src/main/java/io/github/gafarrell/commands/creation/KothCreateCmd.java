@@ -17,7 +17,7 @@ public class KothCreateCmd extends KothCmd {
     public KothCreateCmd(CommandSender sender, String[] args) {
         super(sender, args);
         if (!(sender instanceof Player)) {
-            errorMessage = "Sender is not a player!";
+            responseMessage = "Sender is not a player!";
             successful = false;
             return;
         }
@@ -26,17 +26,18 @@ public class KothCreateCmd extends KothCmd {
     }
 
     @Override
-    public boolean Execute() {
+    public void Execute() {
         newKoth = new KothObject("Koth" + KothStorage.GetKothCount());
 
         if (args == null) {
             KothStorage.put(newKoth);
-            return true;
+            return;
         }
 
         if (args.length > 0 && args[0].equalsIgnoreCase("running")) {
-            errorMessage = "Cannot create a KoTH named \"running\"";
-            return (successful = false);
+            responseMessage = "§cCannot create a KoTH named \"running\"";
+            successful = false;
+            return;
         }
 
         switch (args.length){
@@ -62,18 +63,19 @@ public class KothCreateCmd extends KothCmd {
                 newKoth.setCaptureRegion(new Region(player.getLocation(), Integer.parseInt(args[3])));
                 break;
             default:
-                return (successful = false);
+                successful = false;
+                return;
         }
 
         KothStorage.put(newKoth);
-        return (successful = true);
+        successful = true;
     }
 
     @Override
     public String getResponseMessage() {
-        if (!successful) return "Command was not successful!\n" + errorMessage;
+        if (!successful) return "§cCommand was not successful!\n" + responseMessage;
 
-        return "Successfully create KoTH!\n" + newKoth.toString();
+        return "§aSuccessfully create KoTH!\n" + newKoth.toString();
     }
 
     public KothObject getNewKoth() {

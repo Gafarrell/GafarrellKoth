@@ -15,6 +15,7 @@ import org.bukkit.command.CommandSender;
 import java.util.*;
 
 public class KothCommandHandler implements CommandExecutor {
+    public static final List<String> tabCompletes = new ArrayList<>(Arrays.asList("create", "remove", "info", "start", "edit", "rewards", "pause"));
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
 

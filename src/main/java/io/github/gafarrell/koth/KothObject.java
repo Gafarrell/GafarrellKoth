@@ -1,5 +1,6 @@
 package io.github.gafarrell.koth;
 
+import io.github.gafarrell.GafarrellKoTH;
 import io.github.gafarrell.koth.resources.Region;
 import org.bukkit.inventory.ItemStack;
 
@@ -40,27 +41,35 @@ public class KothObject {
 
     @Override
     public String toString() {
-        StringBuilder info = new StringBuilder("============================\n")
-                .append("Name: ").append(name).append("\n")
-                .append("Capture Time: ").append(timeToCapture/1000).append(" sec\n")
-                .append("Active Duration: ").append(activeDuration/1000).append(" sec\n");
+        StringBuilder info = new StringBuilder("§b============================\n")
+                .append("  §aName: ").append(name).append("\n")
+                .append("  §aCapture Time: ").append(timeToCapture/1000).append(" sec\n")
+                .append("  §aActive Duration: ").append(activeDuration/1000).append(" sec\n");
 
-        if (nextKoth != null) info.append("Next KoTH: ").append(nextKoth).append("\n");
+        if (nextKoth != null) info.append("  §aNext KoTH: ").append(nextKoth).append("\n");
 
         if (rewards != null) {
-            info.append("Rewards:\n");
+            info.append("§a  Rewards:\n");
             for (ItemStack item : rewards) {
                 if (item.hasItemMeta())
-                    info.append("    ").append(item.getItemMeta().getDisplayName());
+                    info.append("    §a").append(item.getItemMeta().getDisplayName());
                 else
-                    info.append("    ").append(item.getType().toString());
+                    info.append("    §a").append(item.getType().toString());
                 info.append(" x").append(item.getAmount()).append('\n');
             }
         }
 
         info.append(captureRegion);
 
-        return info.append("============================\n").toString();
+        return info.append("§b============================").toString();
+    }
+
+
+    @Override
+    public boolean equals(Object other){
+        if (!(other instanceof KothObject)) return false;
+
+        return this.name.equalsIgnoreCase(((KothObject) other).name);
     }
 
     // Info
@@ -70,20 +79,20 @@ public class KothObject {
     /*
         Setters
      */
-    public void setName(String name) {this.name = name; KothStorage.saveKoths();}
-    public void setActiveDuration(long activeDuration) {this.activeDuration = activeDuration; KothStorage.saveKoths();}
-    public void setTimeToCapture(long timeToCapture) {this.timeToCapture = timeToCapture; KothStorage.saveKoths();}
-    public void setRewards(ItemStack[] rewards) {this.rewards = rewards; KothStorage.saveKoths();}
-    public void setCaptureRegion(Region newRegion){this.captureRegion = newRegion; KothStorage.saveKoths();}
+    public void setName(String name) {this.name = name; GafarrellKoTH.saveKoths();}
+    public void setActiveDuration(long activeDuration) {this.activeDuration = activeDuration; GafarrellKoTH.saveKoths();}
+    public void setTimeToCapture(long timeToCapture) {this.timeToCapture = timeToCapture; GafarrellKoTH.saveKoths();}
+    public void setRewards(ItemStack[] rewards) {this.rewards = rewards; GafarrellKoTH.saveKoths();}
+    public void setCaptureRegion(Region newRegion){this.captureRegion = newRegion; GafarrellKoTH.saveKoths();}
 
     public void setNextKoth(String nextKoth) {
         this.nextKoth = nextKoth;
-        KothStorage.saveKoths();
+        GafarrellKoTH.saveKoths();
     }
 
     /*
-            Getters
-         */
+       Getters
+    */
     public Region getCaptureRegion() {return captureRegion;}
     public long getActiveDuration() {
         return activeDuration;

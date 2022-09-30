@@ -11,21 +11,20 @@ public class KothInfoCmd extends KothCmd {
     }
 
     @Override
-    public boolean Execute() {
+    public void Execute() {
         StringBuilder info = new StringBuilder();
         if (args != null && args.length > 0){
             if (args[0].equalsIgnoreCase("running"))
                 info.append(KothStorage.getActiveKothList());
             else {
                 KothObject koth = KothStorage.getKothByName(args[0]);
-                info.append(koth == null ? "KoTH with ID " + args[0] + " was not found." : koth.toString());
+                info.append(koth == null ? "§cKoTH with ID " + args[0] + " was not found." : koth.toString());
             }
         }
         else
             info.append(KothStorage.getKothNames());
 
-        commandSender.sendMessage(info.toString());
-        return false;
+        responseMessage = info.toString();
     }
 
     @Override

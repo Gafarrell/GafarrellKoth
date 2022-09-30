@@ -4,7 +4,7 @@ import org.bukkit.command.CommandSender;
 
 public abstract class KothCmd {
     protected boolean successful = true;
-    protected String errorMessage = null;
+    protected String responseMessage = null;
 
     protected CommandSender commandSender;
     protected String[] args;
@@ -14,14 +14,14 @@ public abstract class KothCmd {
         this.commandSender = commandSender;
     }
 
-    public abstract boolean Execute();
+    public abstract void Execute();
     public boolean errorOccurred(){
-        return errorMessage == null;
+        return responseMessage == null;
     }
     public boolean isSuccessful() {
         return successful;
     }
     public String getResponseMessage() {
-        return errorMessage;
+        return responseMessage;
     }
 }

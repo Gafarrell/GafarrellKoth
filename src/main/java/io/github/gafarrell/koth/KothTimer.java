@@ -9,30 +9,20 @@ public class KothTimer implements Runnable{
 
     private static volatile KothTimer KothTimerInstance;
 
-    private long LastTimeMillis = 0;
+    private long LastTimeMillis = -1;
 
     // Constructor ensures singleton scheduler.
-    private KothTimer(Server broadcasting) {
+    private KothTimer() {
         LastTimeMillis = System.currentTimeMillis();
         if (KothTimerInstance != null) throw new RuntimeException("User getInstance() method to get the singleton scheduler!");
     }
 
     // Sync access to scheduler to avoid double instantiating
-    public synchronized static KothTimer GetInstance(Server server)
-    {
-        if (KothTimerInstance == null) {
-            synchronized (KothTimer.class){
-                if (KothTimerInstance == null) KothTimerInstance = new KothTimer(server);
-            }
-        }
-        return KothTimerInstance;
-    }
-
     public synchronized static KothTimer GetInstance()
     {
         if (KothTimerInstance == null) {
             synchronized (KothTimer.class){
-                if (KothTimerInstance == null) return null;
+                if (KothTimerInstance == null) KothTimerInstance = new KothTimer();
             }
         }
         return KothTimerInstance;
@@ -41,14 +31,11 @@ public class KothTimer implements Runnable{
 
     @Override
     public void run() {
-
-        if (LastTimeMillis > 0f)
+        if (LastTimeMillis > 0)
         {
             long deltaTime = System.currentTimeMillis()-LastTimeMillis;
             KothStorage.gameLoop(deltaTime);
         }
-
-
 
         LastTimeMillis = System.currentTimeMillis();
     }

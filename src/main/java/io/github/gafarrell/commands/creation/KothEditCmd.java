@@ -3,12 +3,9 @@ package io.github.gafarrell.commands.creation;
 import io.github.gafarrell.commands.KothCmd;
 import io.github.gafarrell.koth.KothObject;
 import io.github.gafarrell.koth.KothStorage;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.inventory.Inventory;
 
 public class KothEditCmd extends KothCmd {
 
@@ -17,16 +14,17 @@ public class KothEditCmd extends KothCmd {
     }
 
     @Override
-    public boolean Execute() {
+    public void Execute() {
         if (args.length < 3 || (args.length-1)%2 != 0){
-            errorMessage = "Not enough arguments to make an edit!";
+            responseMessage = "§cNot enough arguments to make an edit!";
         }
 
         KothObject kothToEdit = KothStorage.getKothByName(args[0]);
 
         if (kothToEdit == null) {
-            errorMessage = "Koth " + args[0] + " does not exist.";
-            return (successful = false);
+            responseMessage = "§cKoth " + args[0] + " does not exist.";
+            successful = false;
+            return;
         }
 
         for (int i = 1; i < args.length; i+=2){
@@ -37,12 +35,12 @@ public class KothEditCmd extends KothCmd {
                 }
 
                 case "region" -> {
-                    if (!(commandSender instanceof Player)) return false;
+                    if (!(commandSender instanceof Player)) return;
 
                     Player p = (Player) commandSender;
                     String[] coords = args[i + 1].split(",");
 
-                    if (coords.length != 3) return false;
+                    if (coords.length != 3) return;
                     Location newLoc = p.getLocation();
 
                     newLoc.setX(Double.parseDouble(coords[0]));
@@ -62,6 +60,6 @@ public class KothEditCmd extends KothCmd {
             }
         }
 
-        return true;
+        responseMessage = "§aKoTH successfully edited!";
     }
 }

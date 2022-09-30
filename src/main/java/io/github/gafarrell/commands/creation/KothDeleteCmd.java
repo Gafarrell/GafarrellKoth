@@ -14,20 +14,19 @@ public class KothDeleteCmd extends KothCmd {
     }
 
     @Override
-    public boolean Execute() {
+    public void Execute() {
         successful = KothStorage.remove(args);
 
         if (!successful){
-            errorMessage = "KoTH \"" + args + "\" does not exits.";
+            responseMessage = "§cKoTH \"" + args + "\" does not exits.";
         }
 
-        return successful;
     }
 
     @Override
     public String getResponseMessage() {
-        if (!successful) return "Command was not successful!\n Error: " + errorMessage;
+        if (!successful) return "§cCommand was not successful!\n Error: " + responseMessage;
 
-        return String.format("Successfully removed KoTH %s!\n", args);
+        return String.format("§aSuccessfully removed KoTH %s!\n", args);
     }
 }

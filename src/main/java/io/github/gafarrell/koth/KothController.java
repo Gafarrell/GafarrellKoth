@@ -13,6 +13,7 @@ public class KothController {
     private int ID;
     private float remainingDuration;
     private boolean isActive = false;
+    private boolean isPaused = false;
 
     private final ArrayList<Contestant> activeCaptors = new ArrayList<>();
     private final List<Contestant> participants = new ArrayList<>();
@@ -26,8 +27,9 @@ public class KothController {
 
     public void gameLoop(float DeltaTime)
     {
+        if (isPaused) return;
         remainingDuration -= DeltaTime;
-
+        koth.getCaptureRegion().displayRegion();
         activeCaptors.forEach(contestant -> {
             contestant.gameLoop(DeltaTime);
         });
@@ -69,6 +71,14 @@ public class KothController {
         }
     }
 
+    public boolean isCurrentlyUsing(KothObject obj){
+        return koth.equals(obj);
+    }
+
+    public boolean isCurrentlyUsing(String name){
+        return koth.getName().equalsIgnoreCase(name);
+    }
+
     public boolean isPlayerWithinKoth(Location playerLocation) throws Exception {
         return (koth.getCaptureRegion().IsPlayerInRegion(playerLocation));
     }
@@ -105,7 +115,8 @@ public class KothController {
     }
 
     public void start(){ isActive = true; }
-    public void pause(){ isActive = false; }
+    public void pause(){ isPaused = false; }
+
 
     public float getRemainingDuration() {
         return remainingDuration;
@@ -113,5 +124,8 @@ public class KothController {
 
     public boolean isActive() {
         return isActive;
+    }
+    public boolean isPaused() {
+        return isPaused;
     }
 }
