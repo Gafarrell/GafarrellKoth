@@ -1,58 +1,71 @@
 package io.github.gafarrell;
 
 import io.github.gafarrell.commands.KothCommandHandler;
-import io.github.gafarrell.database.SQLiteConnector;
+import io.github.gafarrell.events.MoveHandler;
+import io.github.gafarrell.koth.KothStorage;
+import io.github.gafarrell.koth.KothTimer;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitScheduler;
 
 import java.io.File;
 import java.io.IOException;
 
 public class GafarrellKoTH extends JavaPlugin {
-    private SQLiteConnector SQLite;
+    private static File kothFile;
+    private static FileConfiguration kothConfig;
+    private static Plugin plugin;
 
     @Override
     public void onEnable() {
-        getServer().getLogger().info("Enabling GafarrellKoTH");
-        getServer().getPluginCommand("koth").setExecutor(new KothCommandHandler());
+        plugin = this;
 
-        try {
-            initSQLLite();
-        } catch (IOException e) {
-            getLogger().info("Exception occurred while initializing SQLite.");
-            getLogger().info(e.getMessage());
-        }
+        getServer().getLogger().info("Enabling GafarrellKoTH");
+
+        getServer().getPluginCommand("koth").setExecutor(new KothCommandHandler());
+        getServer().getPluginManager().registerEvents(new MoveHandler(), this);
+
+        loadCustomConfigs();
+
+        KothStorage.loadKoths();
+
+        BukkitScheduler scheduler = getServer().getScheduler();
+        scheduler.scheduleSyncRepeatingTask(this, KothTimer.GetInstance(getServer()), 10, 10);
+
     }
 
     @Override
     public void onDisable() {
-
+        saveConfig();
     }
 
-    private void initSQLLite() throws IOException {
-        saveDefaultConfig();
+    private static void loadCustomConfigs() {
+        try {
+            kothFile = new File(plugin.getDataFolder(), "koths.yml");
 
-        String path;
+            if (!kothFile.exists()){
+                kothFile.getParentFile().mkdirs();
+                plugin.saveResource("koths.yml", false);
+            }
 
-        if (getConfig().isString("sqlite.path.koth"))
-        {
-            path = getConfig().getString("sqlite.path");
+            kothConfig = new YamlConfiguration();
+
+            kothConfig.load(kothFile);
+
+        } catch (IOException | InvalidConfigurationException e) {
+            plugin.getLogger().warning(e.getMessage());
         }
-        else
-        {
-            path = getDataFolder() + "koth.db";
-            getConfig().set("sqlite.path", getDataFolder().getPath() + "koth.db");
-        }
+    }
 
-        File file = new File(path);
+    public static File getKothFile() {
+        return kothFile;
+    }
 
-        if (file.createNewFile()){
-            getLogger().info("Database file not found! Creating one now...");
-        }
-        else
-        {
-            getLogger().info("Database file found! Loading...");
-        }
-
-        SQLite = new SQLiteConnector(path, getLogger());
+    public static FileConfiguration getKothConfig() {
+        if (kothConfig == null) plugin.reloadConfig();
+        return kothConfig;
     }
 }

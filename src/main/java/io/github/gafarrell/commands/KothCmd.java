@@ -15,19 +15,13 @@ public abstract class KothCmd {
     }
 
     public abstract boolean Execute();
-
-    public abstract String getSuccessMessage();
-
     public boolean errorOccurred(){
         return errorMessage == null;
     }
-
     public boolean isSuccessful() {
         return successful;
     }
-
-
-    public String getErrorMessage() {
+    public String getResponseMessage() {
         return errorMessage;
     }
 }

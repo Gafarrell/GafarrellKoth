@@ -34,24 +34,32 @@ public class KothCreateCmd extends KothCmd {
             return true;
         }
 
+        if (args.length > 0 && args[0].equalsIgnoreCase("running")) {
+            errorMessage = "Cannot create a KoTH named \"running\"";
+            return (successful = false);
+        }
+
         switch (args.length){
             case 1:
                 newKoth.setName(args[0]);
+                newKoth.setCaptureRegion(new Region(player.getLocation(), 3));
                 break;
             case 2:
                 newKoth.setName(args[0]);
-                newKoth.setActiveDuration(Float.parseFloat(args[1]));
+                newKoth.setActiveDuration(Long.parseLong(args[1]));
+                newKoth.setCaptureRegion(new Region(player.getLocation(), 3));
                 break;
             case 3:
                 newKoth.setName(args[0]);
-                newKoth.setActiveDuration(Float.parseFloat(args[1]));
-                newKoth.setTimeToCapture(Float.parseFloat(args[2]));
+                newKoth.setActiveDuration(Long.parseLong(args[1]));
+                newKoth.setTimeToCapture(Long.parseLong(args[2]));
+                newKoth.setCaptureRegion(new Region(player.getLocation(), 3));
                 break;
             case 4:
                 newKoth.setName(args[0]);
-                newKoth.setActiveDuration(Float.parseFloat(args[1]));
-                newKoth.setTimeToCapture(Float.parseFloat(args[2]));
-                newKoth.addCaptureRegion(new Region(player.getLocation(), Integer.parseInt(args[3])));
+                newKoth.setActiveDuration(Long.parseLong(args[1]));
+                newKoth.setTimeToCapture(Long.parseLong(args[2]));
+                newKoth.setCaptureRegion(new Region(player.getLocation(), Integer.parseInt(args[3])));
                 break;
             default:
                 return (successful = false);
@@ -62,10 +70,10 @@ public class KothCreateCmd extends KothCmd {
     }
 
     @Override
-    public String getSuccessMessage() {
-        if (!successful) return "Command was not successful!";
+    public String getResponseMessage() {
+        if (!successful) return "Command was not successful!\n" + errorMessage;
 
-        return "";
+        return "Successfully create KoTH!\n" + newKoth.toString();
     }
 
     public KothObject getNewKoth() {

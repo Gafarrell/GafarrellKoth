@@ -2,23 +2,33 @@ package io.github.gafarrell.koth.resources;
 
 import org.bukkit.entity.Player;
 
-import java.util.Comparator;
-
 public class Contestant implements Comparable<Contestant> {
     private Player p;
-    private float time = 0;
+    private long time = 0;
 
-    public Contestant(Player p, float time){
+    public Contestant(Player p){
         this.p = p;
-        this.time = time;
     }
 
-    public void addTime(float deltaTime){
+    public void gameLoop(float deltaTime){
         this.time += deltaTime;
     }
 
+    public void sendMessage(String message){
+        p.sendMessage(message);
+    }
+
+    public long getTime() {
+        return time;
+    }
+
+    public Player getPlayer() {
+        return p;
+    }
+
+
     @Override
     public int compareTo(Contestant other) {
-        return Float.compare(time, other.time);
+        return Long.compare(other.time, time);
     }
 }
