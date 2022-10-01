@@ -47,6 +47,7 @@ public class KothStorage {
         if (currentKoths.isEmpty()) return "No KoTHs to Display";
 
         StringBuilder builder = new StringBuilder();
+
         for (String s : currentKoths.keySet()){
             builder.append(s);
             builder.append(", ");
@@ -87,8 +88,8 @@ public class KothStorage {
         }
     }
 
-    public static void pauseKoth(String name, int id){
-        KothController controllerToPause = currentControllers.stream().filter(controller -> controller.isCurrentlyUsing(name) && controller.getID() == id).findFirst().orElse(null);
+    public static void pauseKoth(String name){
+        KothController controllerToPause = currentControllers.stream().filter(controller -> controller.isCurrentlyUsing(name)).findFirst().orElse(null);
 
         if (controllerToPause == null) return;
 

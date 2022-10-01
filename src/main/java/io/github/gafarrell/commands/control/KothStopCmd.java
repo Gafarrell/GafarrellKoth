@@ -12,12 +12,11 @@ public class KothStopCmd extends KothCmd {
     @Override
     public void Execute() {
         if (KothStorage.isKothActive(args[0])) {
-            KothStorage.pauseKoth(args[0], Integer.parseInt(args[1]));
+            KothStorage.pauseKoth(args[0]);
             responseMessage = "§aKoTH '" + args[0] + "' with ID: " + args[1] + " successfully paused.";
         }
         else {
             responseMessage = "§cUnable to pause KoTH because it is not currently active!";
         }
-
     }
 }

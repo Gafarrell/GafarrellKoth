@@ -60,7 +60,7 @@ public class KothRewardsCmd extends KothCmd implements Listener {
             return;
         }
 
-        e.getPlayer().sendMessage("§aSuccessfully set rewards for koth: ");
+        e.getPlayer().sendMessage("§aSuccessfully set rewards for koth: " + kothToEdit.getName());
         ArrayList<ItemStack> validItems = new ArrayList<>();
         for (ItemStack s : e.getInventory().getContents()){
             if (s != null) validItems.add(s);

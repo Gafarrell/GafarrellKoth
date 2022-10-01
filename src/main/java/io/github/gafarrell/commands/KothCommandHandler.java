@@ -1,6 +1,7 @@
 package io.github.gafarrell.commands;
 
 import io.github.gafarrell.commands.control.KothStartCmd;
+import io.github.gafarrell.commands.control.KothStopCmd;
 import io.github.gafarrell.commands.creation.KothCreateCmd;
 import io.github.gafarrell.commands.creation.KothDeleteCmd;
 import io.github.gafarrell.commands.creation.KothEditCmd;
@@ -37,7 +38,9 @@ public class KothCommandHandler implements CommandExecutor {
                     kothCommand = new KothDeleteCmd(commandSender, args[1]);
                 }
 
-                case "info", "list" -> kothCommand = new KothInfoCmd(commandSender, subArgs);
+                case "info", "list" -> {
+                    kothCommand = new KothInfoCmd(commandSender, subArgs);
+                }
 
                 case "start" -> kothCommand = new KothStartCmd(commandSender, subArgs);
 
@@ -45,14 +48,16 @@ public class KothCommandHandler implements CommandExecutor {
 
                 case "rewards" -> kothCommand = new KothRewardsCmd(commandSender, subArgs);
 
-                case "help", "pause" -> commandSender.sendMessage("Command not yet implemented!");
+                case "pause" -> kothCommand = new KothStopCmd(commandSender, subArgs);
+
+                case "help" -> commandSender.sendMessage("Command not yet implemented!");
 
                 default -> commandSender.sendMessage("That's not a KoTH command! Please try again. =]");
             }
 
             if (kothCommand != null) {
                 kothCommand.Execute();
-                commandSender.sendMessage(kothCommand.getResponseMessage());
+                if (!(kothCommand instanceof KothInfoCmd) && kothCommand.successful) commandSender.sendMessage(kothCommand.getResponseMessage());
             }
         }
         return true;

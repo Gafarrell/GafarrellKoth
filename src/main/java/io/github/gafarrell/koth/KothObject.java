@@ -2,6 +2,7 @@ package io.github.gafarrell.koth;
 
 import io.github.gafarrell.GafarrellKoTH;
 import io.github.gafarrell.koth.resources.Region;
+import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -41,27 +42,27 @@ public class KothObject {
 
     @Override
     public String toString() {
-        StringBuilder info = new StringBuilder("§b============================\n")
-                .append("  §aName: ").append(name).append("\n")
-                .append("  §aCapture Time: ").append(timeToCapture/1000).append(" sec\n")
-                .append("  §aActive Duration: ").append(activeDuration/1000).append(" sec\n");
+        StringBuilder info = new StringBuilder(ChatColor.BLUE + "============================\n")
+                .append(ChatColor.GREEN).append("  Name: ").append(name).append("\n")
+                .append("  Capture Time: ").append(timeToCapture/1000).append(" sec\n")
+                .append("  Active Duration: ").append(activeDuration/1000).append(" sec\n");
 
-        if (nextKoth != null) info.append("  §aNext KoTH: ").append(nextKoth).append("\n");
+        if (nextKoth != null) info.append("  Next KoTH: ").append(nextKoth).append("\n");
 
         if (rewards != null) {
-            info.append("§a  Rewards:\n");
+            info.append("  Rewards:\n");
             for (ItemStack item : rewards) {
                 if (item.hasItemMeta())
-                    info.append("    §a").append(item.getItemMeta().getDisplayName());
+                    info.append("    ").append(item.getItemMeta().getDisplayName());
                 else
-                    info.append("    §a").append(item.getType().toString());
+                    info.append("    ").append(item.getType().toString());
                 info.append(" x").append(item.getAmount()).append('\n');
             }
         }
 
         info.append(captureRegion);
 
-        return info.append("§b============================").toString();
+        return info.append(ChatColor.BLUE).append("============================").toString();
     }
 
 

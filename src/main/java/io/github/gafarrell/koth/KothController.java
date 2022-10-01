@@ -41,11 +41,6 @@ public class KothController {
         }
     }
 
-    public void updateScoreboard()
-    {
-        // TODO: Implement scoreboard
-    }
-
     public void concludeKoth()
     {
         if (participants.size() == 0) return;

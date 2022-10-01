@@ -36,9 +36,9 @@ public class Region {
     @Override
     public String toString(){
         String info = "";
-        info += String.format("§bLocation: (%f, %f, %f)\n", worldPoint.getX(), worldPoint.getY(), worldPoint.getZ());
-        info += "§bWorld: " + world.getName() + "\n";
-        info += String.format("§bSize: %dx%1$d\n", sideLength);
+        info += String.format("  Location: (%f, %f, %f)\n", worldPoint.getX(), worldPoint.getY(), worldPoint.getZ());
+        info += "  World: " + world.getName() + "\n";
+        info += String.format("  Size: %dx%1$d\n", sideLength);
         return info;
     }
 
@@ -55,6 +55,7 @@ public class Region {
 
     public void displayRegion(){
         Location location = new Location(world, worldPoint.getX(), worldPoint.getY(), worldPoint.getZ());
+
         for (int x = (int) (worldPoint.getX()-(sideLength/2f)); x < (int) (worldPoint.getX()+(sideLength/2f)); x++){
             location.setX(x);
             location.setZ((worldPoint.getZ()-(sideLength/2f)));

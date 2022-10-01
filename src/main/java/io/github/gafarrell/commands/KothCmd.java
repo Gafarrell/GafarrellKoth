@@ -15,9 +15,6 @@ public abstract class KothCmd {
     }
 
     public abstract void Execute();
-    public boolean errorOccurred(){
-        return responseMessage == null;
-    }
     public boolean isSuccessful() {
         return successful;
     }

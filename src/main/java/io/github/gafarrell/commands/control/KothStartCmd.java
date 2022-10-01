@@ -5,11 +5,8 @@ import io.github.gafarrell.koth.KothController;
 import io.github.gafarrell.koth.KothStorage;
 import org.bukkit.command.CommandSender;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 public class KothStartCmd extends KothCmd {
+
 
     public KothStartCmd(CommandSender sender, String[] subargs)
     {
